@@ -18,10 +18,10 @@ continue
 binaryname = "./spaghetti"
 
 #p=process(binaryname)
-#p=remote("207.154.239.148", 1369)
+p=pwn.remote("207.154.239.148", 1369) #207.154.239.148 1369
 # p=pwn.gdb.debug(binaryname, gdbscript=gs)
 # p=pwn.gdb.debug(binaryname)
-p=pwn.process(binaryname)
+# p=pwn.process(binaryname)
 #gdb.attach(p)
 
 def malloc(ind, size):

